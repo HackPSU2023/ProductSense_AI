@@ -77,9 +77,10 @@ def extract_ingredients_from_ocr(raw_text):
     openai.api_key = gpt_key3  # Replace with your OpenAI API key
     prompt = f"Please extract the ingredients from the following OCR-generated text and correct any spelling mistakes, return list of ingredients only within () and use ',' to separate compounds. Example (ingredient1, ingredient2 ...) :\n{raw_text}"
     response = openai.Completion.create(
-        engine="text-davinci-002",  # GPT-3.5 Turbo engine
+        # engine="text-davinci-002",  # GPT-3.5 Turbo engine, text-davinci-002 has been deprecated.
+        engine="gpt-3.5-turbo-instruct", #replaced GPT-3.5 Turbo engine 
         prompt=prompt,
-        max_tokens=500,  # Adjust the max tokens based on expected response length
+        max_tokens=500,  # Adjust the max tokens based on the expected response length
         n=1,  # Generate a single response
     )
     ingredients = response.choices[0].text.strip()
@@ -91,7 +92,8 @@ def final_output(compounds):
     # prompt = f"Please classify the following compounds on a toxicity scale from 0 (non-toxic) to 5 (highly toxic):\n{compounds}. The response should be toxicity level (0-5) for all compounds as list of numbers in single line. The response will be interpreted  as a list"
     prompt = f"{compounds}\n Act like a doctor and based on the ingredients please provide 3 benefits and 3 drawback (related to skin) of using the product. Cut short to main content, avoid disclaimers, write short sentences in 50 words, plain text, use doctors jargon"
     response = openai.Completion.create(
-    engine="text-davinci-002",  # GPT-3.5 Turbo engine
+    #engine="text-davinci-002",  # GPT-3.5 Turbo engine, text-davinci-002 has been deprecated.
+    engine="gpt-3.5-turbo-instruct", #replaced GPT-3.5 Turbo engine
     prompt=prompt,
     max_tokens=200,
     n=1,
